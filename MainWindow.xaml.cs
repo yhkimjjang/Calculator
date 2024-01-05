@@ -23,53 +23,71 @@ namespace Calculator
             InitializeComponent();
 
             _numberVo = new CalculatorNumberVo();
-
-            acButton.Click += AcButton_Click;
-            negtiveButton.Click += NegtiveButton_Click;
-            percentButton.Click += PercentButton_Click;
-        }
-
-        private void PercentButton_Click(object sender, RoutedEventArgs e)
-        {
-            if(decimal.TryParse((string)resultLabel.Content, out lastNumber))
-            {
-                _numberVo.LastNumber /= 100;
-                resultLabel.Content = $"{_numberVo.ToStringResult()}";
-            }
-        }
-
-        private void NegtiveButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (decimal.TryParse((string)resultLabel.Content, out lastNumber))
-            {
-                _numberVo.LastNumber *= -1;
-                resultLabel.Content = $"{_numberVo.ToStringResult()}";
-            }
-        }
-
-        private void AcButton_Click(object sender, RoutedEventArgs e)
-        {
-            _numberVo.LastNumber = 0;
-            resultLabel.Content = $"{_numberVo.ToStringResult()}";
         }
 
         /// <summary>
-        /// 7번 클릭했을 때 발생하는 이벤트
+        /// Number Button을 클릭했을 작동하는 이벤트로서 resultLabel에 숫자를 표시함
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void number7Button_Click(object sender, RoutedEventArgs e)
+        private void NumberButton_Click(object sender, RoutedEventArgs e)
         {
+            decimal number = 0;
+            Button numberButton = sender as Button;
+            decimal selectedNumber = Convert.ToDecimal(numberButton.Content);
+
             if(decimal.TryParse((string)resultLabel.Content, out decimal result))
             {
-                _numberVo.LastNumber = result * 10 + 7;
+                number = result * 10 + selectedNumber;
             }
             else
             {
-                _numberVo.LastNumber = 7;
+                number = selectedNumber;
+            }
+            _numberVo.ResultNumber = number;
+            resultLabel.Content = _numberVo.ToStringResult();
+        }
+
+        private void OperationButton_Click(object sender, RoutedEventArgs e) 
+        {
+            if (sender == acButton)
+            {
+                _numberVo.ResultNumber = 0;
+            }
+            else if (sender == negtiveButton)
+            {
+                _numberVo.ResultNumber *= -1;
+            }
+            else if (sender == percentButton)
+            {
+                _numberVo.ResultNumber /= 100;
+            }
+            else if (sender == divideButton)
+            {
+
+            }
+            else if (sender == multiplyButton)
+            {
+
+            }
+            else if (sender == subtractButton)
+            {
+
+            }
+            else if (sender == plusButton)
+            {
+
+            }
+            else if (sender == equalButton)
+            {
+
+            }
+            else if(sender == decimalButton)
+            {
+
             }
 
-            resultLabel.Content = $"{_numberVo.ToStringResult()}";
+            resultLabel.Content = _numberVo.ToStringResult();
         }
     }
 }
