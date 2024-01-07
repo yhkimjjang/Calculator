@@ -16,13 +16,12 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly CalculatorNumberVo _numberVo;
         private decimal lastNumber;
+        private SelectedOperator selectedOperator;
+
         public MainWindow()
         {
             InitializeComponent();
-
-            _numberVo = new CalculatorNumberVo();
         }
 
         /// <summary>
@@ -32,62 +31,56 @@ namespace Calculator
         /// <param name="e"></param>
         private void NumberButton_Click(object sender, RoutedEventArgs e)
         {
-            decimal number = 0;
             Button numberButton = sender as Button;
-            decimal selectedNumber = Convert.ToDecimal(numberButton.Content);
+            decimal selectedValue = Convert.ToDecimal(numberButton.Content);
 
-            if(decimal.TryParse((string)resultLabel.Content, out decimal result))
+            if(resultLabel.Content.ToString() == "0")
             {
-                number = result * 10 + selectedNumber;
+                resultLabel.Content = $"{selectedValue}";
             }
             else
             {
-                number = selectedNumber;
+                resultLabel.Content = $"{resultLabel.Content}{selectedValue}";
             }
-            _numberVo.ResultNumber = number;
-            resultLabel.Content = _numberVo.ToStringResult();
         }
 
         private void OperationButton_Click(object sender, RoutedEventArgs e) 
         {
-            if (sender == acButton)
-            {
-                _numberVo.ResultNumber = 0;
-            }
-            else if (sender == negtiveButton)
-            {
-                _numberVo.ResultNumber *= -1;
-            }
-            else if (sender == percentButton)
-            {
-                _numberVo.ResultNumber /= 100;
-            }
-            else if (sender == divideButton)
-            {
+            if (sender == plusButton) selectedOperator = SelectedOperator.Addition;
+            if(sender == subtractButton) selectedOperator = SelectedOperator.Subtraction;
+            if(sender == multiplyButton) selectedOperator = SelectedOperator.Multiplication;
+            if(sender == divideButton) selectedOperator = SelectedOperator.Division;
+        }
+    }
 
-            }
-            else if (sender == multiplyButton)
-            {
+    public enum SelectedOperator
+    {
+        Addition,
+        Subtraction, 
+        Multiplication, 
+        Division,
+    }
 
-            }
-            else if (sender == subtractButton)
-            {
+    public class SimpleMath
+    {
+        public static decimal Add(decimal n1, decimal n2)
+        {
+            return n1 + n2;
+        }
 
-            }
-            else if (sender == plusButton)
-            {
+        public static decimal Subtract(decimal n1, decimal n2) 
+        { 
+            return n1 - n2;
+        }
 
-            }
-            else if (sender == equalButton)
-            {
+        public static decimal Multiply(decimal n1, decimal n2)
+        {
+            return n1 * n2;
+        }
 
-            }
-            else if(sender == decimalButton)
-            {
-
-            }
-
-            resultLabel.Content = _numberVo.ToStringResult();
+        public static decimal Divide(decimal n1, decimal n2)
+        {
+            return n1 / n2;
         }
     }
 }
